@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
 export default {
-  // EXAMPLE: process.env.EXAMPLE!,
+  SITE_RECAPTCHA_KEY: process.env.SITE_RECAPTCHA_KEY!,
+  SITE_RECAPTCHA_SECRET: process.env.SITE_RECAPTCHA_SECRET!,
 };

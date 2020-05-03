@@ -1,36 +1,36 @@
 <template>
-  <v-img
-    class="align-center"
-    :aspect-ratio="withAspectRatio ? aspectRatio : undefined"
-    :height="!withAspectRatio ? height : undefined"
-    :src="src"
-    :srcset="srcset"
-    :sizes="sizes"
-  >
-    <slot />
-  </v-img>
+  <client-only>
+    <template>
+      <v-img
+        :class="{ [`align-${align}`]: true }"
+        :aspect-ratio="withAspectRatio ? aspectRatio : undefined"
+        :height="!withAspectRatio ? height : undefined"
+        :src="src"
+        :srcset="srcset"
+        :sizes="sizes"
+      >
+        <slot />
+      </v-img>
+    </template>
+    <template v-slot:placeholder>
+      <slot />
+    </template>
+  </client-only>
 </template>
 <script lang="ts">
-import { computed, defineComponent } from '@vue/composition-api';
+import { computed, defineComponent, PropType } from '@vue/composition-api';
 
 import { useBreakpoint } from '~/hooks';
+import { ResponsiveImageSrcs } from '~/hooks/images';
 
 export default defineComponent({
   props: {
-    src1x: {
+    align: {
       type: String,
       required: true,
     },
-    src2x: {
-      type: String,
-      required: true,
-    },
-    naturalWidth: {
-      type: Number,
-      required: true,
-    },
-    naturalHeight: {
-      type: Number,
+    srcs: {
+      type: Object as PropType<ResponsiveImageSrcs>,
       required: true,
     },
     height: {
@@ -48,24 +48,26 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const { width } = useBreakpoint(ctx, ['width']);
-    const naturalAspectRatio = props.naturalWidth / props.naturalHeight;
-    const src = computed(() => props.src1x);
-    const srcset = computed(
-      () =>
-        // eslint-disable-next-line prettier/prettier
-        `${props.src1x} ${props.naturalWidth}w, ${props.src2x} ${props.naturalWidth * 2}w`,
+    const src = computed(() => props.srcs.src600w);
+    const srcset = computed(() =>
+      [
+        `${props.srcs.src600w} 600w`,
+        `${props.srcs.src960w} 960w`,
+        `${props.srcs.src1280w} 1280w`,
+        `${props.srcs.src1920w} 1920w`,
+      ].join(', '),
     );
     const sizes = computed(() => {
-      const percent = 100 * naturalAspectRatio;
+      const percent = 100 * props.srcs.aspectRatio;
       const vw = props.withAspectRatio
         ? Math.round(percent / props.aspectRatio)
         : Math.round(percent / (width.value / props.height));
       return (vw < 100 ? 100 : vw) + 'vw';
     });
     return {
-      sizes,
       src,
       srcset,
+      sizes,
     };
   },
 });

@@ -1,7 +1,7 @@
 <template>
   <hero-image
-    :src1x="hero1x"
-    :src2x="hero2x"
+    :srcs="hero"
+    align="center"
     with-aspect-ratio
     :natural-width="960"
     :natural-height="388"
@@ -43,9 +43,8 @@
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api';
 
-import hero1x from '~/assets/images/top/hero.jpg';
-import hero2x from '~/assets/images/top/hero@2x.jpg';
 import { useBreakpoint } from '~/hooks';
+import hero from '~/hooks/images/top/hero';
 
 export default defineComponent({
   components: {
@@ -55,8 +54,7 @@ export default defineComponent({
     const { xs } = useBreakpoint(ctx, ['xs']);
     return {
       xs,
-      hero1x,
-      hero2x,
+      hero,
     };
   },
 });

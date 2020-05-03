@@ -3,7 +3,10 @@
     <v-card flat tile width="100%" class="white--text text-center">
       <v-card-text class="grey white--text pa-2">
         <p class="ma-0 caption">
-          運営会社 | プライバシーポリシー
+          <a href="https://leafage.co.jp" target="_blank" class="white--text">
+            運営会社
+          </a>
+          <!-- | プライバシーポリシー -->
         </p>
       </v-card-text>
       <v-card-text class="black white--text pa-2 overline">

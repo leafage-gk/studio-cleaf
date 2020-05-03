@@ -1,12 +1,5 @@
 <template>
-  <hero-image
-    :src1x="src1x"
-    :src2x="src2x"
-    :height="200"
-    :natural-width="960"
-    :natural-height="192"
-    :with-aspect-ratio="xs"
-  >
+  <hero-image align="center" :srcs="srcs" :height="200" :with-aspect-ratio="xs">
     <v-overlay absolute>
       <v-row align="center" justify="center">
         <h1
@@ -24,21 +17,18 @@
   </hero-image>
 </template>
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent, PropType } from '@vue/composition-api';
 
 import { useBreakpoint } from '~/hooks';
+import { ResponsiveImageSrcs } from '~/hooks/images';
 
 export default defineComponent({
   components: {
     HeroImage: () => import('~/components/atoms/HeroImage.vue'),
   },
   props: {
-    src1x: {
-      type: String,
-      required: true,
-    },
-    src2x: {
-      type: String,
+    srcs: {
+      type: Object as PropType<ResponsiveImageSrcs>,
       required: true,
     },
     caption: {
